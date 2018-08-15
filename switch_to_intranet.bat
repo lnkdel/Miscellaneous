@@ -1,0 +1,6 @@
+Echo off
+echo  手动设置IP地址....
+Netsh interface IP Set Addr "本地连接" Static 10.10.13.60 255.255.255.0 10.10.13.1
+
+Echo 设置成功 您的IP为10.10.13.60,按任一键后,就可以使用内网了…… 
+Pause 
