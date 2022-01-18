@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <style>
+            #main,#buttons{
+                text-align: center;
+            }
+            button{
+                border:1px solid #64c878;
+                box-shadow: 0 1px 2px #b9ecc4 inset,0 -1px 0 #6c9f76 inset,0 -2px 3px #b9ecc4 inset;
+                background: -webkit-linear-gradient(top,#90dfa2,#84d494);
+                background: -moz-linear-gradient(top,#90dfa2,#84d494);
+                background: linear-gradient(top,#90dfa2,#84d494);
+                padding: 10px 20px;
+                margin-bottom: 20px;
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <section id="buttons"><button id="switch">连续: 开</button> <button id="next1">播放下一个</button></section>
+        </div>
+        <div>
+            <section id="main">
+                <video id="player" src="http://v.nrzj.vip/video.php" controls="controls"></video>
+            </section>
+        </div>
+        <p>
+            <script>
+                (function(window, document) {
+                if (top != self) {
+                    window.top.location.replace(self.location.href);
+                }
+                var get = function(id) {
+                    return document.getElementById(id);
+                }
+                var bind = function(element, event, callback) {
+                    return element.addEventListener(event, callback);
+                }
+                var auto = true;
+                var player = get('player');
+                var randomm = function() {
+                    player.src = 'http://v.nrzj.vip/video.php?_t=' + Math.random();
+                    player.play();
+                }
+                bind(get('next1'), 'click', randomm);
+                    bind(player, 'error', function() {
+                    randomm();
+                });
+                bind(get('switch'), 'click', function() {
+                    auto = !auto;
+                    this.innerText = '连续: ' + (auto ? '开' : '关');
+                });
+                bind(player, 'ended', function() {
+                    if (auto) randomm();
+                });
+                })(window, document);
+            </script>
+        </p>
+    </body>
+</html>
