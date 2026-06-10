@@ -109,13 +109,23 @@ def split_pdf_pymupdf(input_pdf_path, output_pdf_path):
     doc.close()
     print(f"切割完成，输出文件: {output_pdf_path}")
 
-if __name__ == "__main__":    
-    input_path = "input"
-    out_path = "out"
-    
+if __name__ == "__main__":
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    input_path = os.path.join(script_dir, "input")
+    out_path = os.path.join(script_dir, "out")
+
+    if not os.path.isdir(input_path):
+        raise FileNotFoundError(f"输入目录不存在: {input_path}")
+
+    os.makedirs(out_path, exist_ok=True)
+
     for dirpath, dirnames, filenames in os.walk(input_path):
-        for file in filenames:       
-            # print(os.path.join(dirpath, file))     
-            input_file = file
-            output_file = "out/" + file
+        for file in filenames:
+            if not file.lower().endswith(".pdf"):
+                continue
+            input_file = os.path.join(dirpath, file)
+            rel_path = os.path.relpath(input_file, input_path)
+            output_file = os.path.join(out_path, rel_path)
+            os.makedirs(os.path.dirname(output_file), exist_ok=True)
+            # print(input_file)
             split_pdf_pymupdf(input_file, output_file)
